@@ -19,6 +19,7 @@ class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id
+    String token
     String loginname
     String password
     String nickname
@@ -26,6 +27,6 @@ class User {
     String birthday
     String telephone
     String wechat
-    @Column(name = "create_at")
+    @Column(name = "create_at",columnDefinition="DEFAULT CURRENT_TIMESTAMP")
     Date createAt
 }
