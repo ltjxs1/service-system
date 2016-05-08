@@ -18,17 +18,27 @@ class SecurityController {
     @Autowired
     UserService userService
 
-    @RequestMapping(value="/register",method = RequestMethod.POST)
-    Object register(@RequestBody User u){
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    Object register(@RequestBody User u) {
         userService.add(u)
     }
-    @RequestMapping(value="/login",method = RequestMethod.POST)
-    String token(@RequestBody User u){
-        u = userService.login(u.loginname,u.password)
-        if(!u){
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    String token(@RequestBody User u) {
+        u = userService.login(u.loginname, u.password)
+        if (!u) {
             throw new RuntimeException("登录失败！")
         }
         u.token
+    }
+
+    @RequestMapping(value = "/master-login", method = RequestMethod.POST)
+    String token(String masterPassword) {
+        String token = userService.masterLogin(masterPassword)
+        if (!token) {
+            throw new RuntimeException("登录失败！")
+        }
+        token
     }
 
 

@@ -10,20 +10,23 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SampleSecurityController {
 
-    @RequestMapping(value = "/manager/a",method = RequestMethod.GET)
-    Object a(){
-        [a:1]
+    @RequestMapping(value = "/manager/a", method = RequestMethod.GET)
+    Object a() {
+        [a: 1]
     }
-    @RequestMapping(value = "/anyone",method = RequestMethod.GET)
-    Object b(){
-        [a:1]
+
+    @RequestMapping(value = "/anyone", method = RequestMethod.GET)
+    Object b() {
+        [a: 1]
     }
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    Object c(){
-        [a:1]
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    Object c() {
+        [a: 1]
     }
-    @RequestMapping(value = "/user/status",method = RequestMethod.GET)
-    Object d(){
-        [a:1]
+
+    @RequestMapping(value = "/user/status", method = RequestMethod.GET)
+    Object d() {
+        [a: 1]
     }
 }
