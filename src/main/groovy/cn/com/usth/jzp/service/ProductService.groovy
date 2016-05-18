@@ -14,19 +14,24 @@ class ProductService {
     @Autowired
     ProductJpaRepository productJpaRepository
 
-    Product addOrUpdate(Product product){
+    Product addOrUpdate(Product product) {
         product = flush(product)
         productJpaRepository.save(product)
     }
 
-    Product flush(Product product){
-        if(product?.id == null){
+    void delete(Integer id) {
+        productJpaRepository.delete(id)
+    }
+
+    Product flush(Product product) {
+        if (product?.id == null) {
             return product
         }
         Product product1 = productJpaRepository.findOne(product.id)
         product1.description = product.description
         product1.name = product.name
         product1.price = product.price
+        product1.onSale = product.onSale
         product1
     }
 

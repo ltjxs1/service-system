@@ -3,6 +3,7 @@ package cn.com.usth.jzp.entity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 import javax.persistence.*
+import java.sql.Timestamp
 
 /**
  * Created by Administrator on 2016/5/3.
@@ -18,6 +19,9 @@ class Worker {
     String birthday
     String wechat
     String telephone
-    @Column(name = "create_at")
-    Date createAt
+    @Column(name = "create_at", columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
+    Timestamp createAt
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "worker")
+    List<Order> orders = []
+
 }

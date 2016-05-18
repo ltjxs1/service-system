@@ -3,17 +3,14 @@ package cn.com.usth.jzp.web.master
 import cn.com.usth.jzp.entity.Worker
 import cn.com.usth.jzp.service.WorkerService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Created by Administrator on 2016/5/8.
  */
 @RestController
 @RequestMapping("/master/worker")
+@CrossOrigin(maxAge = 3600L)
 class WorkerController {
 
     @Autowired
@@ -27,7 +24,7 @@ class WorkerController {
     @RequestMapping(method = RequestMethod.DELETE)
     Object delete(Integer id) {
         workerService.delete(id)
-        ResponseEntity.ok()
+        [success: true]
     }
 
 }

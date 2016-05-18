@@ -33,7 +33,7 @@ class SecurityController {
     }
 
     @RequestMapping(value = "/master-login", method = RequestMethod.POST)
-    String token(String masterPassword) {
+    String token(@RequestBody String masterPassword) {
         String token = userService.masterLogin(masterPassword)
         if (!token) {
             throw new RuntimeException("登录失败！")

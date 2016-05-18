@@ -3,17 +3,14 @@ package cn.com.usth.jzp.web.master
 import cn.com.usth.jzp.entity.Product
 import cn.com.usth.jzp.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Created by Administrator on 2016/5/9.
  */
 @RestController
 @RequestMapping("/master/product")
+@CrossOrigin(maxAge = 3600L)
 class ProductController {
 
     @Autowired
@@ -27,7 +24,7 @@ class ProductController {
     @RequestMapping(method = RequestMethod.DELETE)
     Object delete(Integer id) {
         productService.delete(id)
-        ResponseEntity.ok()
+        [success: true]
     }
 
 

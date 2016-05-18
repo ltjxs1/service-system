@@ -15,41 +15,37 @@ public class SecurityFilter implements Filter {
     @Autowired
     UserService userService
 
-    @Override
-    void init(FilterConfig filterConfig) throws ServletException {
+    String commonPath = "/common"
+    String masterPath = "/master"
+    String freePath = "/free"
 
-    }
+    @Override
+    void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
     void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest
         String uri = httpServletRequest.requestURI
-        if (uri.startsWith("/master")) {
-            String token = servletRequest.getParameter("token")
-            if (!token) {
-                throw new RuntimeException("没有权限！")
-            } else {
-                if (!userService.masterValidate(token)) {
-                    throw new RuntimeException("权限不正确！")
-                }
-            }
-        }
-        if (!uri.startsWith("/free")) {
-            String token = servletRequest.getParameter("token")
-            if (!token) {
-                throw new RuntimeException("没有权限！")
-            } else {
-                if (!userService.validate(token)) {
-                    throw new RuntimeException("权限不正确！")
-                }
-            }
+        String token = servletRequest.getParameter("token")
+        if (!ensureToken(uri, token)) {
+            throw new RuntimeException("权限不正确！")
         }
         filterChain.doFilter(servletRequest, servletResponse)
+    }
 
+    boolean ensureToken(String uri, String token) {
+        if (uri.startsWith(freePath)) {
+            return true
+        }
+        if (uri.startsWith(masterPath)) {
+            return userService.masterValidate(token)
+        }
+        if (uri.startsWith(commonPath)) {
+            return userService.validate(token) || userService.masterValidate(token)
+        }
+        return userService.validate(token)
     }
 
     @Override
-    void destroy() {
-
-    }
+    void destroy() {}
 }
