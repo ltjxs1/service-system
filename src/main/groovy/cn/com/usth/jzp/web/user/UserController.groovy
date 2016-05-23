@@ -21,4 +21,8 @@ class UserController {
         userService.update(user)
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    String validate(){
+        "success"
+    }
 }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>家政信息服务系统</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://cdn.jsdelivr.net/vue/1.0.18/vue.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link href="cover.css" rel="stylesheet"/>
+    <script src="common.js" rel="stylesheet"></script>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+            <div id="app">
+                <div class="masthead clearfix">
+                    <div class="inner">
+                        <h3 class="masthead-brand"></h3>
+                        <nav>
+                            <ul class="nav masthead-nav">
+                                <li ><a href="index.html">用户登录</a></li>
+                                <li class="active"><a href="master.html">管理员登录</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="inner cover">
+                    <h1 class="cover-heading">请输入管理员密码</h1>
+                    <p class="lead">密码：
+                        <label>
+                            <input type="password" v-model="password">
+                        </label>
+                        <button v-on:click="masterLogin(password)" class="btn btn-lg btn-default">登录</button>
+                    </p>
+                </div>
+
+                <div class="mastfoot">
+                    <div class="inner"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+    window.onload = function () {
+    };
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            loginname: null,
+            password: null,
+            token:null
+        },
+        methods: {
+            masterLogin: function (password) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "text",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: password,
+                    url: PREFIX + "free/master-login",
+                    success: function (data) {
+                        var token = data;
+                        window.location = PREFIX + "master-index.html?token=" + token;
+                    },
+                    error: function (data) {
+                        alert(data.responseText.message);
+                    }
+                });
+            }
+        }
+    });
+
+
+</script>
+</body>
+</html>

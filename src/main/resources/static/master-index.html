@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>管理员主界面</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://cdn.jsdelivr.net/vue/1.0.18/vue.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <script src="common.js" rel="stylesheet"></script>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color: #87CEFF">
+
+<div class="navbar navbar-duomi navbar-static-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"  id="logo">家政信息服务系统管理员端
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <ul id="main-nav" class="nav nav-tabs nav-stacked" >
+                <li>
+                    <a href="#systemSetting" class="nav-header collapsed" data-toggle="collapse">
+
+                        系统管理
+                        <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul id="systemSetting" class="nav nav-list collapse secondmenu" style="height: 0px;">
+                        <li><a href="#" onclick="jumpWithToken('master.html',token);">用户管理</a></li>
+                        <li><a href="#">菜单管理</a></li>
+                        <li><a href="#">角色管理</a></li>
+                        <li><a href="#">日志查看</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">物料管理</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col-md-10">
+            主窗口
+        </div>
+    </div>
+</div>
+
+<script>
+    var token=null;
+    window.onload = function () {
+        validateMaster();
+        token=getQueryString("token");
+    };
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            loginname: null,
+            password: null,
+            token: null
+        }
+    });
+</script>
+</body>
+</html>

@@ -3,6 +3,7 @@ package cn.com.usth.jzp.web
 import cn.com.usth.jzp.entity.User
 import cn.com.usth.jzp.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping("/free")
+@CrossOrigin(maxAge = 3600L)
 class SecurityController {
 
     @Autowired

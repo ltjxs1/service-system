@@ -18,6 +18,7 @@ public class SecurityFilter implements Filter {
     String commonPath = "/common"
     String masterPath = "/master"
     String freePath = "/free"
+    List allows = [".html",".css",".ico",".js"]
 
     @Override
     void init(FilterConfig filterConfig) throws ServletException {}
@@ -34,6 +35,14 @@ public class SecurityFilter implements Filter {
     }
 
     boolean ensureToken(String uri, String token) {
+        if(allows.find {String suffix ->
+            uri.contains(suffix)
+        }){
+            return true
+        }
+        if(uri=="/"){
+            return true
+        }
         if (uri.startsWith(freePath)) {
             return true
         }

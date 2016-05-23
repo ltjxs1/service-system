@@ -9,23 +9,9 @@ import org.springframework.web.bind.annotation.*
  * Created by Administrator on 2016/5/9.
  */
 @RestController
-@RequestMapping("/master/product")
+@RequestMapping("/master")
 @CrossOrigin(maxAge = 3600L)
-class ProductController {
-
-    @Autowired
-    ProductService productService
-
-    @RequestMapping(method = [RequestMethod.POST, RequestMethod.PUT])
-    Object addOrUpdate(@RequestBody Product product) {
-        productService.addOrUpdate(product)
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE)
-    Object delete(Integer id) {
-        productService.delete(id)
-        [success: true]
-    }
+class MasterController {
 
     @RequestMapping(value ="/validate",method = RequestMethod.GET)
     String validate(){

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>家政信息服务系统</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://cdn.jsdelivr.net/vue/1.0.18/vue.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link href="cover.css" rel="stylesheet"/>
+    <script src="common.js" rel="stylesheet"></script>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+            <div id="app">
+                <div class="masthead clearfix">
+                    <div class="inner">
+                        <h3 class="masthead-brand"></h3>
+                        <nav>
+                            <ul class="nav masthead-nav">
+                                <li class="active"><a href="#">用户登录</a></li>
+                                <li><a href="master.html" onclick="">管理员登录</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="inner cover">
+                    <h1 class="cover-heading">欢迎来到家政信息服务系统</h1>
+                    <p class="lead">用户账号：
+                        <label>
+                            <input v-model="loginname">
+                        </label>
+                    </p>
+                    <p class="lead">用户密码：
+                        <label>
+                            <input type="password" v-model="password">
+                        </label>
+                    </p>
+                    <p class="lead">
+                        <button v-on:click="login(loginname,password)" class=" btn btn-lg btn-default">登录</button>
+                        <button v-on:click="register(loginname,password)" class="btn btn-lg btn-default">注册</button>
+                    </p>
+                </div>
+
+                <div class="mastfoot">
+                    <div class="inner"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+    window.onload = function () {
+    };
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            loginname: null,
+            password: null,
+            token:null
+        },
+        methods: {
+            login: function (loginname, password) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "text",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        loginname: loginname,
+                        password: password
+                    }),
+                    url: PREFIX + "free/login",
+                    success: function (data) {
+                        var token = data;
+                        window.location = window.location + "?token=" + token;
+                    },
+                    error: function (data) {
+                        alert("登录失败！");
+                    }
+                });
+            },
+            register: function (loginname, password) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "text",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        loginname: loginname,
+                        password: password
+                    }),
+                    url: PREFIX + "free/register",
+                    success: function (data) {
+                        alert("注册成功！");
+                    },
+                    error: function (data) {
+                        alert("注册失败！");
+                    }
+                });
+            }
+        }
+    });
+
+
+</script>
+</body>
+</html>
