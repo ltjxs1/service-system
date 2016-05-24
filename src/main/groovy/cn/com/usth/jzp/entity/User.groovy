@@ -1,5 +1,6 @@
 package cn.com.usth.jzp.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 import javax.persistence.*
@@ -26,5 +27,6 @@ class User {
     @Column(name = "create_at", columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
     Timestamp createAt
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonIgnore
     List<Order> orders = []
 }

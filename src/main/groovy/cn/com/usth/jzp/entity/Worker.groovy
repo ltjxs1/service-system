@@ -1,5 +1,6 @@
 package cn.com.usth.jzp.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 import javax.persistence.*
@@ -22,6 +23,7 @@ class Worker {
     @Column(name = "create_at", columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
     Timestamp createAt
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "worker")
+    @JsonIgnore
     List<Order> orders = []
 
 }

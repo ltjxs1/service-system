@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>管理员主界面</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://cdn.jsdelivr.net/vue/1.0.18/vue.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <script src="common.js" rel="stylesheet"></script>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color: #87CEFF">
+
+<div class="navbar navbar-duomi navbar-static-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" id="logo">家政信息服务系统管理员端
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <ul id="main-nav" class="nav nav-tabs nav-stacked">
+                <li>
+                    <a href="#user" class="nav-header collapsed" data-toggle="collapse">
+
+                        个人信息
+                        <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul id="user" class="nav nav-list collapse secondmenu" style="height: 0px;">
+                        <li><a href="#" onclick="jumpWithToken('user-message.html',token);">信息修改</a></li>
+                        <li><a href="#" onclick="jumpWithToken('user-password.html',token);">密码修改</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" onclick="jumpWithToken('user-product.html',token);">商品查询</a>
+                </li>
+                <li>
+                    <a href="#" onclick="jumpWithToken('user-order.html',token);">订单查询</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="col-md-10">
+                <div id="app">
+                    <ul>
+                        <li>昵称：<input v-model="nickname"> </li>
+                        <li>性别：<input v-model="gender"> </li>
+                        <li>生日：<input v-model="birthday"> </li>
+                        <li>电话：<input v-model="telephone"> </li>
+                        <li>微信：<input v-model="wechat"> </li>
+                        <li><button v-on:click="update()">更新</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var token = null;
+
+            var vm = new Vue({
+                el: '#app',
+                data: {
+                    id: null,
+                    nickname: null,
+                    gender: null,
+                    birthday: null,
+                    telephone: null,
+                    wechat: null
+                },
+                methods: {
+                    update: function () {
+                        alert(this.id);
+                        alert(this.nickname);
+                        $.ajax({
+                            type: "PUT",
+                            dataType: "json",
+                            contentType:'application/json;charset=UTF-8',
+                            data: JSON.stringify({
+                                id: this.id,
+                                nickname: this.nickname,
+                                gender: this.gender,
+                                birthday: this.birthday,
+                                telephone: this.telephone,
+                                wechat: this.wechat
+                            }),
+                            url: PREFIX + "/user?token="+token,
+                            success: function (data) {
+                                alert("修改成功！");
+                            },
+                            error: function (data) {
+                                alert(data.responseText.message);
+                            }
+                        });
+                    }
+                }
+
+            });
+            window.onload = function () {
+                var user = validateUser();
+                token=getQueryString("token");
+                initUser(user);
+            };
+            function initUser(data) {
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    url: PREFIX + "user?token=" + token,
+                    success: function (data) {
+                        refresh(data);
+                    },
+                    error: function (data) {
+                        alert("请先登录！");
+                        window.location = PREFIX + "index.html";
+                    }
+                });
+            }
+            function refresh(data){
+                for (k in data) {
+                    console.log(k+":"+data[k]);
+                    vm.$set(k, data[k]);
+                }
+            }
+        </script>
+</body>
+</html>

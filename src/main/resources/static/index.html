@@ -72,7 +72,7 @@
         data: {
             loginname: null,
             password: null,
-            token:null
+            token: null
         },
         methods: {
             login: function (loginname, password) {
@@ -87,7 +87,7 @@
                     url: PREFIX + "free/login",
                     success: function (data) {
                         var token = data;
-                        window.location = window.location + "?token=" + token;
+                        window.location = PREFIX+"user-index.html?token=" + token;
                     },
                     error: function (data) {
                         alert("登录失败！");

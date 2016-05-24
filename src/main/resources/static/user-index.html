@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,54 +28,36 @@
         <div class="col-md-2">
             <ul id="main-nav" class="nav nav-tabs nav-stacked">
                 <li>
-                    <a href="#product" class="nav-header collapsed" data-toggle="collapse">
+                    <a href="#user" class="nav-header collapsed" data-toggle="collapse">
 
-                        商品管理
+                        个人信息
                         <span class="pull-right glyphicon glyphicon-chevron-down"></span>
                     </a>
-                    <ul id="product" class="nav nav-list collapse secondmenu" style="height: 0px;">
-                        <li><a href="#" onclick="jumpWithToken('master-product.html',token);">商品查询</a></li>
-                        <li><a href="#" onclick="jumpWithToken('master-product-create.html',token);">商品发布</a></li>
+                    <ul id="user" class="nav nav-list collapse secondmenu" style="height: 0px;">
+                        <li><a href="#" onclick="jumpWithToken('user-message.html',token);">信息修改</a></li>
+                        <li><a href="#" onclick="jumpWithToken('user-password.html',token);">密码修改</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#worker" class="nav-header collapsed" data-toggle="collapse">
-
-                        员工管理
-                        <span class="pull-right glyphicon glyphicon-chevron-down"></span>
-                    </a>
-                    <ul id="worker" class="nav nav-list collapse secondmenu" style="height: 0px;">
-                        <li><a href="#" onclick="jumpWithToken('master-worker.html',token);">员工信息</a></li>
-                        <li><a href="#" onclick="jumpWithToken('master-worker-add.html',token);">添加员工</a></li>
-                    </ul>
+                    <a href="#" onclick="jumpWithToken('user-product.html',token);">商品查询</a>
                 </li>
                 <li>
-                    <a href="#" onclick="jumpWithToken('user-order.html',token);">订单管理</a>
+                    <a href="#" onclick="jumpWithToken('user-order.html',token);">订单查询</a>
                 </li>
-
 
             </ul>
         </div>
-        <div class="col-md-10">
 
-        </div>
     </div>
 </div>
+
 
 <script>
     var token = null;
     window.onload = function () {
-        //validateMaster();
-        //token=getQueryString("token");
+        validateUser();
+        token=getQueryString("token");
     };
-    var vm = new Vue({
-        el: '#app',
-        data: {
-            loginname: null,
-            password: null,
-            token: null
-        }
-    });
 </script>
 </body>
 </html>

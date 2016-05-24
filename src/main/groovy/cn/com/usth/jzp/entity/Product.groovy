@@ -1,5 +1,6 @@
 package cn.com.usth.jzp.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 import javax.persistence.*
@@ -27,6 +28,7 @@ class Product {
     Timestamp createAt
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
+    @JsonIgnore
     List<Order> orders = []
 
 
