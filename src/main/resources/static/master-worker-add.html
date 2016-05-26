@@ -59,9 +59,10 @@
         <div class="col-md-10">
             <div id="app">
                 <ul>
-                    <li>商品名：<input v-model="name"> </li>
-                    <li>商品描述：<input v-model="description"> </li>
-                    <li>商品价格：<input v-model="price"> </li>
+                    <li>姓名：<input v-model="name"> </li>
+                    <li>生日：<input v-model="birthday"> </li>
+                    <li>微信：<input v-model="wechat"> </li>
+                    <li>电话：<input v-model="telephone"> </li>
 
                     <li><button v-on:click="update()">确定</button></li>
                 </ul>
@@ -78,8 +79,9 @@
         data: {
             id: null,
             name: null,
-            price: null,
-            description: null
+            birthday: null,
+            wechat: null,
+            telephone: null
         },
         methods:{
             update: function () {
@@ -91,10 +93,11 @@
                     data: JSON.stringify({
                         id: this.id,
                         name: this.name,
-                        description: this.description,
-                        price:this.price
+                        birthday: this.birthday,
+                        wechat: this.wechat,
+                        telephone: this.telephone
                     }),
-                    url: PREFIX + "master/product?token="+token,
+                    url: PREFIX + "master/worker?token="+token,
                     success: function (data) {
                         if (t.id == null) {
                             alert("创建成功！");
@@ -123,7 +126,7 @@
             type: "GET",
             dataType: "json",
             contentType: 'application/json;charset=UTF-8',
-            url: PREFIX + "master/product/"+id+"?token=" + token,
+            url: PREFIX + "master/worker/"+id+"?token=" + token,
             success: function (data) {
                 refresh(data);
             },

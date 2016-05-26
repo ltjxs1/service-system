@@ -21,7 +21,12 @@ class WorkerController {
         workerService.addOrUpdate(worker)
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value="/{id}",method = RequestMethod.GET)
+    Object findOne(@PathVariable Integer id) {
+        workerService.workerJpaRepository.findOne(id)
+    }
+
+        @RequestMapping(method = RequestMethod.DELETE)
     Object delete(Integer id) {
         workerService.delete(id)
         [success: true]
