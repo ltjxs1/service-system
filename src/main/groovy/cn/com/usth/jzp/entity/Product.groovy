@@ -20,8 +20,8 @@ class Product {
     Double price
     String description
 
-    @Column(name = "on_sale", columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
-    Boolean onSale
+    @Column(name = "on_sale")
+    Boolean onSale = true
 //    @Column(name = "image_name")
 //    String imageName
     @Column(name = "create_at", columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")

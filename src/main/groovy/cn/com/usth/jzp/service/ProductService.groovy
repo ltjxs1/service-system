@@ -31,7 +31,6 @@ class ProductService {
         product1.description = product.description
         product1.name = product.name
         product1.price = product.price
-        product1.onSale = product.onSale
         product1
     }
 

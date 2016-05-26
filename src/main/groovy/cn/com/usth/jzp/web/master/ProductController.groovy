@@ -21,15 +21,17 @@ class ProductController {
         productService.addOrUpdate(product)
     }
 
+    @RequestMapping(value="/{id}",method = RequestMethod.GET)
+    Object findOne(@PathVariable Integer id){
+        productService.productJpaRepository.findOne(id)
+    }
+
+
     @RequestMapping(method = RequestMethod.DELETE)
     Object delete(Integer id) {
         productService.delete(id)
         [success: true]
     }
 
-    @RequestMapping(value ="/validate",method = RequestMethod.GET)
-    String validate(){
-        "success"
-    }
 
 }
