@@ -23,7 +23,5 @@ class OrderMessage {
     @JoinColumn(name = "order_id")
     Order order
 
-    Boolean isUsual
-
     String message
 }

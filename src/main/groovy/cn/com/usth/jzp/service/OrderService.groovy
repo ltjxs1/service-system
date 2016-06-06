@@ -2,9 +2,11 @@ package cn.com.usth.jzp.service
 
 import cn.com.usth.jzp.entity.Order
 import cn.com.usth.jzp.entity.OrderMessage
+import cn.com.usth.jzp.entity.Product
 import cn.com.usth.jzp.entity.User
 import cn.com.usth.jzp.entity.Worker
 import cn.com.usth.jzp.entity.jpa.OrderJpaRepository
+import cn.com.usth.jzp.entity.jpa.ProductJpaRepository
 import cn.com.usth.jzp.entity.jpa.UserJpaRepository
 import cn.com.usth.jzp.entity.jpa.WorkerJpaRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,19 +27,27 @@ class OrderService {
     @Autowired
     WorkerJpaRepository workerJpaRepository
 
+    @Autowired
+    ProductJpaRepository productJpaRepository
+
     Order flush(Order order) {
         if (order?.id == null) {
             return null
         }
         Order o = orderJpaRepository.findOne(order.id)
         o.createAt = order.createAt
-        o.dealPrice = order.dealPrice
         o.status = order.status
         o
     }
 
-    Order deal(Order order, Integer userId) {
+    Order deal(Integer productId, Integer userId) {
         User u = userJpaRepository.findOne(userId)
+        Product p = productJpaRepository.findOne(productId)
+        Order order = new Order()
+        order.product = p
+        p.orders << order
+        order.user = u
+        u.orders << order
         addMessage(order, "订单建立成功")
         order.status = "待指派"
         orderJpaRepository.save(order)
@@ -55,7 +65,8 @@ class OrderService {
 
     Order finService(Integer orderId){
         Order order = orderJpaRepository.findOne(orderId)
-        addMessage(order,"本次服务结束，请您进行评价")
+        order.status = "已完成"
+        addMessage(order,"本次服务完成，欢迎下次再来！")
     }
 
     Order addTip(Integer orderId, String message) {
@@ -64,9 +75,9 @@ class OrderService {
         orderJpaRepository.save(order)
     }
 
-    Order userEvalulate(Integer orderId, String message,Integer level) {
+    Order evalulate(Integer orderId, String message,Integer level) {
         Order order = orderJpaRepository.findOne(orderId)
-        addMessage(order,"评价完成，星级为：$level 评价信息：$message ")
+        addMessage(order,"反馈信息：$message ")
         orderJpaRepository.save(order)
     }
 
@@ -74,7 +85,6 @@ class OrderService {
         OrderMessage orderMessage = new OrderMessage()
         orderMessage.message = message
         orderMessage.order = order
-        orderMessage.isUsual = isUsual
         order.orderMessages << orderMessage
         order
     }

@@ -33,7 +33,6 @@ class Order {
     Product product
 
     String status
-    Double dealPrice
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
     List<OrderMessage> orderMessages = []
