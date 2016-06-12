@@ -2,6 +2,7 @@ package cn.com.usth.jzp.filter
 
 import cn.com.usth.jzp.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 import javax.servlet.*
@@ -12,6 +13,10 @@ import javax.servlet.http.HttpServletRequest
  */
 @Component
 public class SecurityFilter implements Filter {
+
+    @Value("\${password.enable}")
+    Boolean enable
+
     @Autowired
     UserService userService
 
@@ -35,6 +40,9 @@ public class SecurityFilter implements Filter {
     }
 
     boolean ensureToken(String uri, String token) {
+        if(!enable){
+            return true
+        }
         if(allows.find {String suffix ->
             uri.contains(suffix)
         }){

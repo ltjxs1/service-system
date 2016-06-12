@@ -21,11 +21,16 @@ class ProductController {
         productService.addOrUpdate(product)
     }
 
-    @RequestMapping(value="/{id}",method = RequestMethod.GET)
-    Object findOne(@PathVariable Integer id){
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    Object findOne(@PathVariable Integer id) {
         productService.productJpaRepository.findOne(id)
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    Object find(@RequestParam(required = false,defaultValue = "1")int page,
+                @RequestParam(required = false,defaultValue = "5")int size) {
+        productService.select(false,page-1,size)
+    }
 
     @RequestMapping(method = RequestMethod.DELETE)
     Object delete(Integer id) {

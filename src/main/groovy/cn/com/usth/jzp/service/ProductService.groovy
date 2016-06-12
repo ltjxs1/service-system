@@ -3,6 +3,9 @@ package cn.com.usth.jzp.service
 import cn.com.usth.jzp.entity.Product
 import cn.com.usth.jzp.entity.jpa.ProductJpaRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 /**
@@ -13,6 +16,15 @@ class ProductService {
 
     @Autowired
     ProductJpaRepository productJpaRepository
+
+    Page<Product> select(boolean onSale,int page,int size){
+        Pageable pageable = new PageRequest(page,size)
+        if(onSale){
+            return productJpaRepository.findByOnSale(true,pageable)
+        }else{
+            return productJpaRepository.findAll(pageable)
+        }
+    }
 
     Product addOrUpdate(Product product) {
         product = flush(product)
@@ -33,5 +45,7 @@ class ProductService {
         product1.price = product.price
         product1
     }
+
+
 
 }

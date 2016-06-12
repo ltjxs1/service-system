@@ -80,9 +80,13 @@
                                 <td style="text-align: center">1z</td>
                                 <td style="text-align: center">
                                     <div class="buttons">
-                                        <button class="btn btn-sm btn-success" ng-click="view(privilege.id)" ui-sref="app.privilegeView">查看</button>
-                                            <button class="btn btn-sm btn-info" ng-click="edit(privilege.id)" ui-sref="app.privilegeEdit">编辑</button>
-                                                <button class="btn btn-sm btn-danger" ng-click="del(privilege.id)">删除</button>
+                                        <button class="btn btn-sm btn-success" ng-click="view(privilege.id)"
+                                                ui-sref="app.privilegeView">查看
+                                        </button>
+                                        <button class="btn btn-sm btn-info" ng-click="edit(privilege.id)"
+                                                ui-sref="app.privilegeEdit">编辑
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" ng-click="del(privilege.id)">删除</button>
                                     </div>
                                 </td>
                             </tr>
@@ -132,11 +136,49 @@
     var vm = new Vue({
         el: '#app',
         data: {
-            loginname: null,
-            password: null,
-            token: null
+            content: [
+                {
+                    id: null,
+                    name: null,
+                    price: null,
+                    description: null,
+                    onSale: null,
+                    createAt: null
+                }
+            ],
+            totalPages: null,
+            totalElements: 10,
+            last: false,
+            size: 5,
+            number: 0,
+            sort: null,
+            numberOfElements: 5,
+            first: true
+        },
+        methods:{
+            init:function(){
+                load(this.searchWord, this.currentPage, this.pageSize);
+            }
         }
     });
+    function load(name, page, size) {
+        if (name == null) {
+            name = "";
+        }
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: PREFIX + "/?name=" + name + "&page=" + page + "&size=" + size,
+            success: function (data) {
+                for (k in data) {
+                    vm.$set(k, data[k]);
+                }
+            },
+            error: function (data) {
+                alert(data.responseText.message);
+            }
+        });
+    }
 </script>
 </body>
 </html>
