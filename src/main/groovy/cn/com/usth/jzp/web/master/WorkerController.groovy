@@ -24,9 +24,9 @@ class WorkerController {
     @RequestMapping(value = "/{hint}", method = RequestMethod.GET)
     Object findOne(@PathVariable String hint) {
         Object result = workerService.findByHint(hint)
-        if(result){
+        if (result) {
             return result
-        }else{
+        } else {
             throw new RuntimeException("用户不存在!")
         }
     }

@@ -19,10 +19,9 @@ class UserOrderController {
     OrderService orderService
 
     @RequestMapping(method = RequestMethod.POST)
-    Order deal(Integer productId,String token) {
-        orderService.deal(productId,token)
+    Order deal(Integer productId, String token) {
+        orderService.deal(productId, token)
     }
-   
 
 
 }
