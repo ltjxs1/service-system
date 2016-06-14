@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户主界面</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://cdn.jsdelivr.net/vue/1.0.18/vue.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <script src="common.js" rel="stylesheet"></script>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color: #87CEFF">
+
+<div class="navbar navbar-duomi navbar-static-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" id="logo">家政信息服务系统用户端
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <ul id="main-nav" class="nav nav-tabs nav-stacked">
+                <li>
+                    <a href="#user" class="nav-header collapsed" data-toggle="collapse">
+
+                        个人信息
+                        <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul id="user" class="nav nav-list collapse secondmenu" style="height: 0px;">
+                        <li><a href="#" onclick="jumpWithToken('user-message.html',token);">信息修改</a></li>
+                        <li><a href="#" onclick="jumpWithToken('user-password.html',token);">密码修改</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" onclick="jumpWithToken('user-product.html',token);">商品查询</a>
+                </li>
+                <li>
+                    <a href="#" onclick="jumpWithToken('user-order.html',token);">订单查询</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+        <div class="col-md-10">
+            <div id="app">
+                <div class="panel panel-default">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead style=" background-color: #87CEFF">
+                            <tr>
+                                <!--<th style="text-align: center">编号</th>-->
+                                <th style="text-align: center">商品名</th>
+                                <th style="text-align: center">价格</th>
+                                <th style="text-align: center">描述</th>
+                                <th style="text-align: center">下单</th>
+                            </tr>
+                            </thead>
+                            <tbody style=" background-color: #87CEFF" v-for="product in content" track-by="$index">
+                            <tr style=" background-color: #87CEFF">
+                                <td style="text-align: center">{{product.name}}</td>
+                                <td style="text-align: center">{{product.price}}</td>
+                                <td style="text-align: center">{{product.description}}</td>
+                                <td style="text-align: center">
+                                    <button class="btn btn-sm btn-success" v-on:click="deal(product.id)">
+                                        下单
+                                    </button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                            <tr>
+                                <td colspan="6" style=" background-color: #87CEFF">
+                                    <div style="text-align: left">
+                                        总页数:{{totalPages}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--分页-->
+                        <div style="text-align: right; background-color: #87CEFF">
+                            <!--<ul class="pagination" id="pagination1">]-->
+                            <ul class="pagination">
+                                <li>
+                                    <a v-on:click="setPage(0)" aria-label="Previous"><span
+                                            aria-hidden="true">&laquo;</span></a>
+                                </li>
+                                <li>
+                                <a v-on:click="setPage(number-1)" aria-label="Previous"><span
+                                        aria-hidden="true">&lt;</span></a>
+                                </li>
+                                <li><a href="#">{{number+1}}</a></li>
+                                <li>
+                                    <a aria-label="Next" v-on:click="setPage(number+1)"><span
+                                            aria-hidden="true">&gt;</span></a>
+                                </li>
+                                <li>
+                                    <a aria-label="Next" v-on:click="setPage(totalPages-1)"><span
+                                            aria-hidden="true">&raquo;</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script>
+    var token = null;
+    function load(page, size) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: PREFIX + "user/product/?page=" + page + "&size=" + size +"&token="+token,
+            success: function (data) {
+                for (k in data) {
+                    vm.$set(k, data[k]);
+                }
+            },
+            error: function (data) {
+                alert(data.responseText.message);
+            }
+        });
+    }
+    window.onload = function () {
+        load(0, 5);
+        var user = validateUser();
+        token=getQueryString("token");
+    };
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            content: [
+                {
+                    id: null,
+                    name: null,
+                    price: null,
+                    description: null,
+                    onSale: null
+                }
+            ],
+            totalPages: null,
+            totalElements: 10,
+            last: false,
+            size: 5,
+            number: 0,
+            sort: null,
+            numberOfElements: 5,
+            first: true
+        },
+        methods: {
+            refresh: function () {
+                load(this.number, this.size);
+            },
+            deal: function (id) {
+                var t = this;
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: PREFIX + "user/order?productId=" + id + "&token=" + token,
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        alert("操作成功!");
+                    },
+                    error: function (data) {
+                        alert(data.responseText.message);
+                    }
+                });
+            },
+            setPage: function (page) {
+                var t = this;
+                page=parseInt(page);
+                if (page < 0) {
+                    page = 0;
+                }
+                if (page > t.totalPages-1) {
+                    page = t.totalPages-1;
+                }
+                vm.$set("number",page);
+                t.refresh();
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

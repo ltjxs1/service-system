@@ -40,8 +40,8 @@ class OrderService {
         o
     }
 
-    Order deal(Integer productId, Integer userId) {
-        User u = userJpaRepository.findOne(userId)
+    Order deal(Integer productId, String token) {
+        User u = userJpaRepository.findTop1ByToken(token)
         Product p = productJpaRepository.findOne(productId)
         Order order = new Order()
         order.product = p
@@ -81,7 +81,7 @@ class OrderService {
         orderJpaRepository.save(order)
     }
 
-    private Order addMessage(Order order, String message, Boolean isUsual = true) {
+    private Order addMessage(Order order, String message) {
         OrderMessage orderMessage = new OrderMessage()
         orderMessage.message = message
         orderMessage.order = order

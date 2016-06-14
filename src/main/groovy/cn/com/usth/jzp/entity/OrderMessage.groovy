@@ -1,5 +1,6 @@
 package cn.com.usth.jzp.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 import javax.persistence.*
@@ -21,6 +22,7 @@ class OrderMessage {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     Order order
 
     String message
