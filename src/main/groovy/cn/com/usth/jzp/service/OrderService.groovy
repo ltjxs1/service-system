@@ -86,7 +86,7 @@ class OrderService {
     Order afterAssign(Integer orderId) {
         Order order = orderJpaRepository.findOne(orderId)
         addMessage(order, "员工服务完毕")
-        order.status = "已指派"
+        order.status = "服务完成"
         orderJpaRepository.save(order)
     }
 

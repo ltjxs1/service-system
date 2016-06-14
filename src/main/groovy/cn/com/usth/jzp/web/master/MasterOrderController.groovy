@@ -24,9 +24,15 @@ class MasterOrderController {
                 @RequestParam(required = false, defaultValue = "5") int size) {
         orderService.select(page,size)
     }
+
     @RequestMapping(value = "/assign", method = RequestMethod.POST)
     Object assign(Integer id,String hint){
         orderService.assign(id,hint)
+    }
+
+    @RequestMapping(value = "/aftAssign", method = RequestMethod.POST)
+    Object aftAssign(Integer id){
+        orderService.afterAssign(id)
     }
 
 

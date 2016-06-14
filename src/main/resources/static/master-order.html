@@ -88,7 +88,7 @@
                                                 v-on:click="assign(order.id,order.assignHint)">指派
                                         </button>
                                         <button class="btn btn-sm btn-success" v-if="order.status=='已指派'"
-                                                v-on:click="after(order.id)">确认完成
+                                                v-on:click="aftAssign(order.id)">确认完成
                                         </button>
                                     </div>
                                 </td>
@@ -222,12 +222,12 @@
                     }
                 });
             },
-            delete: function (id) {
+            aftAssign: function (id) {
                 var t = this;
                 $.ajax({
-                    type: "DELETE",
+                    type: "POST",
                     dataType: "json",
-                    url: PREFIX + "master/product/?id=" + id + "&token=" + token,
+                    url: PREFIX + "master/order/aftAssign?id=" + id + "&token=" + token,
                     contentType: 'application/json;charset=UTF-8',
                     success: function (data) {
                         alert("操作成功!");
