@@ -19,8 +19,20 @@ class UserOrderController {
     OrderService orderService
 
     @RequestMapping(method = RequestMethod.POST)
-    Order deal(Integer productId, String token) {
+    Object deal(Integer productId, String token) {
         orderService.deal(productId, token)
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    Object find(@RequestParam(required = false, defaultValue = "0") int page,
+                @RequestParam(required = false, defaultValue = "5") int size,
+    String token) {
+        orderService.select(page,size,token)
+    }
+
+    @RequestMapping(value="/finish",method = RequestMethod.POST)
+    Object finish(Integer id, String token) {
+        orderService.finService(id, token)
     }
 
 

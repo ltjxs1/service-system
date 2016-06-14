@@ -54,6 +54,11 @@ class OrderService {
         Pageable pageable = new PageRequest(page, size)
         orderJpaRepository.findAll(pageable)
     }
+    Page<Order> select(int page, int size,String token) {
+        Pageable pageable = new PageRequest(page, size)
+        User user = userJpaRepository.findTop1ByToken(token)
+        orderJpaRepository.findByUserId(user.id,pageable)
+    }
 
     Order deal(Integer productId, String token) {
         User u = userJpaRepository.findTop1ByToken(token)
@@ -90,8 +95,12 @@ class OrderService {
         orderJpaRepository.save(order)
     }
 
-    Order finService(Integer orderId) {
+    Order finService(Integer orderId,String token) {
+        User user = userJpaRepository.findTop1ByToken(token)
         Order order = orderJpaRepository.findOne(orderId)
+        if(user.id!=order.user.id){
+            throw new RuntimeException("用户不匹配!")
+        }
         order.status = "已完成"
         addMessage(order, "本次服务完成，欢迎下次再来！")
     }
