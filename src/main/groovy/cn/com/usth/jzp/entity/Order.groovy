@@ -18,6 +18,8 @@ class Order {
     Integer id
     @Column(name = "create_at", columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
     Timestamp createAt
+    @Column(name = "update_at")
+    Timestamp updateAt = new Timestamp(System.currentTimeMillis())
 
     @ManyToOne
     @JoinColumn(name = "worker_id")
