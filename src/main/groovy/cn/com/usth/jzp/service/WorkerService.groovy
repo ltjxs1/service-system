@@ -31,7 +31,7 @@ class WorkerService {
     Worker findByHint(String hint) {
         Integer id = hint.isInteger() ? Integer.parseInt(hint) : null
         if (id) {
-            Worker worker =  workerJpaRepository.findOne(id)
+            return workerJpaRepository.findOne(id)
         } else {
             List<Worker> list = workerJpaRepository.findByName(hint)
             if (list?.size() == 1) {
