@@ -64,32 +64,27 @@
                             <thead style=" background-color: #87CEFF">
                             <tr>
                                 <!--<th style="text-align: center">编号</th>-->
-                                <th style="text-align: center">商品名</th>
-                                <th style="text-align: center">价格</th>
-                                <th style="text-align: center">描述</th>
-                                <th style="text-align: center">上下架</th>
+                                <th style="text-align: center">姓名</th>
+                                <th style="text-align: center">生日</th>
+                                <th style="text-align: center">微信</th>
+                                <th style="text-align: center">电话号</th>
                                 <th style="text-align: center">编辑</th>
                             </tr>
                             </thead>
-                            <tbody style=" background-color: #87CEFF" v-for="product in content" track-by="$index">
+                            <tbody style=" background-color: #87CEFF" v-for="worker in content" track-by="$index">
                             <tr style=" background-color: #87CEFF">
-                                <td style="text-align: center">{{product.name}}</td>
-                                <td style="text-align: center">{{product.price}}</td>
-                                <td style="text-align: center">{{product.description}}</td>
-                                <td style="text-align: center">
-                                    <button class="btn btn-sm btn-success" v-on:click="change(product.id)">
-                                        <p v-if="product.onSale!=true">上架</p>
-                                        <p v-if="product.onSale!=false">下架</p>
-                                    </button>
-                                </td>
+                                <td style="text-align: center">{{worker.name}}</td>
+                                <td style="text-align: center">{{worker.birthday}}</td>
+                                <td style="text-align: center">{{worker.wechat}}</td>
+                                <td style="text-align: center">{{worker.telephone}}</td>
                                 <td style="text-align: center">
                                     <div class="buttons">
                                     <!--<button class="btn btn-sm btn-success" ng-click="view(privilege.id)"-->
                                     <!--ui-sref="app.privilegeView">查看-->
                                     <!--</button>-->
-                                    <button class="btn btn-sm btn-info" v-on:click="edit(product.id)">编辑
+                                    <button class="btn btn-sm btn-info" v-on:click="edit(worker.id)">编辑
                                     </button>
-                                    <button class="btn btn-sm btn-danger" v-on:click="delete(product.id)">删除</button>
+                                    <button class="btn btn-sm btn-danger" v-on:click="delete(worker.id)">删除</button>
                                     </div>
                                 </td>
                             </tr>
@@ -139,7 +134,7 @@
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: PREFIX + "master/product/?page=" + page + "&size=" + size +"&token="+token,
+            url: PREFIX + "master/worker/?page=" + page + "&size=" + size+"&token=" + token,
             success: function (data) {
                 for (k in data) {
                     vm.$set(k, data[k]);
@@ -152,8 +147,8 @@
     }
     window.onload = function () {
         load(0, 5);
-        validateMaster();
-        token=getQueryString("token");
+        //validateMaster();
+        //token=getQueryString("token");
     };
     var vm = new Vue({
         el: '#app',
@@ -162,9 +157,9 @@
                 {
                     id: null,
                     name: null,
-                    price: null,
-                    description: null,
-                    onSale: null
+                    birthday: null,
+                    wechat: null,
+                    telephone: null
                 }
             ],
             totalPages: null,
@@ -180,28 +175,12 @@
             refresh: function () {
                 load(this.number, this.size);
             },
-            change: function (id) {
-                var t = this;
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: PREFIX + "master/product/change/" + id + "?token=" + token,
-                    contentType: 'application/json;charset=UTF-8',
-                    success: function (data) {
-                        alert("操作成功!");
-                        t.refresh();
-                    },
-                    error: function (data) {
-                        alert(data.responseText.message);
-                    }
-                });
-            },
             delete:function(id){
                 var t = this;
                 $.ajax({
                     type: "DELETE",
                     dataType: "json",
-                    url: PREFIX + "master/product/?id=" + id + "&token=" + token,
+                    url: PREFIX + "master/worker/?id=" + id + "&token=" + token,
                     contentType: 'application/json;charset=UTF-8',
                     success: function (data) {
                         alert("操作成功!");
@@ -213,7 +192,7 @@
                 });
             },
             edit: function(id){
-                jumpWithToken("master-product-add.html?id="+id,token);
+                jumpWithToken("master-worker-add.html?id="+id,token);
             },
             setPage: function (page) {
                 var t = this;

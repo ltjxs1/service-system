@@ -21,12 +21,23 @@ class WorkerController {
         workerService.addOrUpdate(worker)
     }
 
-    @RequestMapping(value="/{id}",method = RequestMethod.GET)
-    Object findOne(@PathVariable Integer id) {
-        workerService.workerJpaRepository.findOne(id)
+    @RequestMapping(value = "/{hint}", method = RequestMethod.GET)
+    Object findOne(@PathVariable String hint) {
+        Object result = workerService.findByHint(hint)
+        if(result){
+            return result
+        }else{
+            throw new RuntimeException("用户不存在!")
+        }
     }
 
-        @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    Object find(@RequestParam(required = false, defaultValue = "0") int page,
+                @RequestParam(required = false, defaultValue = "5") int size) {
+        workerService.select(page, size)
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
     Object delete(Integer id) {
         workerService.delete(id)
         [success: true]

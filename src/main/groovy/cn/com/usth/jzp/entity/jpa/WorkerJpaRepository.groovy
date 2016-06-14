@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository
 @Repository
 public interface WorkerJpaRepository extends JpaRepository<Worker, Integer> {
 
-    List<Worker> findByNameLike(String name)
+    List<Worker> findByName(String name)
 }
