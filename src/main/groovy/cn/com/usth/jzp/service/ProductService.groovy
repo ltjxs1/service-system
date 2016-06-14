@@ -26,6 +26,12 @@ class ProductService {
         }
     }
 
+    Product changeSaleStat(Integer id){
+        Product product = productJpaRepository.findOne(id)
+        product.onSale = !product.onSale
+        productJpaRepository.save(product)
+    }
+
     Product addOrUpdate(Product product) {
         product = flush(product)
         productJpaRepository.save(product)

@@ -1,4 +1,5 @@
-var PREFIX = "http://localhost:213/";
+var PREFIX = "http://localhost:21313/";
+var enableSecurity=false;
 function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
@@ -15,8 +16,10 @@ function validateUser() {
         success: function (data) {
         },
         error: function (data) {
-            alert("请先登录！");
-            window.location = PREFIX + "index.html";
+            if (enableSecurity) {
+                alert("请先登录！");
+                window.location = PREFIX + "index.html";
+            }
         }
         
     });
@@ -31,8 +34,10 @@ function validateMaster() {
         success: function (data) {
         },
         error: function (data) {
-            alert("请先登录！");
-            window.location = PREFIX + "master.html";
+            if (enableSecurity) {
+                alert("请先登录！");
+                window.location = PREFIX + "master.html";
+            }
         }
     });
 }
