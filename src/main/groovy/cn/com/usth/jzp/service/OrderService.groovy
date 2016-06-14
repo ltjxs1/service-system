@@ -63,21 +63,21 @@ class OrderService {
         orderJpaRepository.save(order)
     }
 
-    Order finService(Integer orderId){
+    Order finService(Integer orderId) {
         Order order = orderJpaRepository.findOne(orderId)
         order.status = "已完成"
-        addMessage(order,"本次服务完成，欢迎下次再来！")
+        addMessage(order, "本次服务完成，欢迎下次再来！")
     }
 
     Order addTip(Integer orderId, String message) {
         Order order = orderJpaRepository.findOne(orderId)
-        addMessage(order,message)
+        addMessage(order, message)
         orderJpaRepository.save(order)
     }
 
-    Order evalulate(Integer orderId, String message,Integer level) {
+    Order evalulate(Integer orderId, String message, Integer level) {
         Order order = orderJpaRepository.findOne(orderId)
-        addMessage(order,"反馈信息：$message ")
+        addMessage(order, "反馈信息：$message ")
         orderJpaRepository.save(order)
     }
 

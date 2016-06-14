@@ -23,7 +23,7 @@ public class SecurityFilter implements Filter {
     String commonPath = "/common"
     String masterPath = "/master"
     String freePath = "/free"
-    List allows = [".html",".css",".ico",".js"]
+    List allows = [".html", ".css", ".ico", ".js"]
 
     @Override
     void init(FilterConfig filterConfig) throws ServletException {}
@@ -40,15 +40,15 @@ public class SecurityFilter implements Filter {
     }
 
     boolean ensureToken(String uri, String token) {
-        if(!enable){
+        if (!enable) {
             return true
         }
-        if(allows.find {String suffix ->
+        if (allows.find { String suffix ->
             uri.contains(suffix)
-        }){
+        }) {
             return true
         }
-        if(uri=="/"){
+        if (uri == "/") {
             return true
         }
         if (uri.startsWith(freePath)) {

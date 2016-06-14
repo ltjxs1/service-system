@@ -82,9 +82,9 @@ class UserService {
         this.masterPassword == masterPassword
     }
 
-    User refreshPassWord(Integer id,String oldPassWord,String newPassWord){
+    User refreshPassWord(Integer id, String oldPassWord, String newPassWord) {
         User user = userJpaRepository.findOne(id)
-        if(!user?.password?.equals(passwordEncode(oldPassWord))){
+        if (!user?.password?.equals(passwordEncode(oldPassWord))) {
             throw new RuntimeException("密码错误！")
         }
         user.password = passwordEncode(newPassWord)

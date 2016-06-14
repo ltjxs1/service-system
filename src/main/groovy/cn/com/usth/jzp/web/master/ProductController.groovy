@@ -25,15 +25,16 @@ class ProductController {
     Object findOne(@PathVariable Integer id) {
         productService.productJpaRepository.findOne(id)
     }
+
     @RequestMapping(value = "/change/{id}", method = RequestMethod.POST)
     Object change(@PathVariable Integer id) {
         productService.changeSaleStat(id)
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    Object find(@RequestParam(required = false,defaultValue = "0")int page,
-                @RequestParam(required = false,defaultValue = "5")int size) {
-        productService.select(false,page,size)
+    Object find(@RequestParam(required = false, defaultValue = "0") int page,
+                @RequestParam(required = false, defaultValue = "5") int size) {
+        productService.select(false, page, size)
     }
 
     @RequestMapping(method = RequestMethod.DELETE)

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin(maxAge = 3600L)
 class MasterController {
 
-    @RequestMapping(value ="/validate",method = RequestMethod.GET)
-    String validate(){
+    @RequestMapping(value = "/validate", method = RequestMethod.GET)
+    String validate() {
         "success"
     }
 

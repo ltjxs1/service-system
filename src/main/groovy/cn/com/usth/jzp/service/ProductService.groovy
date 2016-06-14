@@ -17,16 +17,16 @@ class ProductService {
     @Autowired
     ProductJpaRepository productJpaRepository
 
-    Page<Product> select(boolean onSale,int page,int size){
-        Pageable pageable = new PageRequest(page,size)
-        if(onSale){
-            return productJpaRepository.findByOnSale(true,pageable)
-        }else{
+    Page<Product> select(boolean onSale, int page, int size) {
+        Pageable pageable = new PageRequest(page, size)
+        if (onSale) {
+            return productJpaRepository.findByOnSale(true, pageable)
+        } else {
             return productJpaRepository.findAll(pageable)
         }
     }
 
-    Product changeSaleStat(Integer id){
+    Product changeSaleStat(Integer id) {
         Product product = productJpaRepository.findOne(id)
         product.onSale = !product.onSale
         productJpaRepository.save(product)
@@ -51,7 +51,6 @@ class ProductService {
         product1.price = product.price
         product1
     }
-
 
 
 }

@@ -22,20 +22,18 @@ class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    User validate(String token){
+    User validate(String token) {
         userService.validate(token)
     }
 
-    @RequestMapping(value="/password",method = RequestMethod.PUT)
-    Object refreshPassWord(@RequestBody Map map){
+    @RequestMapping(value = "/password", method = RequestMethod.PUT)
+    Object refreshPassWord(@RequestBody Map map) {
         Integer id = Integer.parseInt(map["id"].toString())
-        String oldPassword =map['oldPassword']
-        String newPassword =map['newPassword']
-        userService.refreshPassWord(id,oldPassword,newPassword)
-        [success:true]
+        String oldPassword = map['oldPassword']
+        String newPassword = map['newPassword']
+        userService.refreshPassWord(id, oldPassword, newPassword)
+        [success: true]
     }
-
-
 
 
 }
