@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest
 @Component
 public class SecurityFilter implements Filter {
 
-    @Value("\${password.enable}")
+    @Value("\${security.enable}")
     Boolean enable
 
     @Autowired
