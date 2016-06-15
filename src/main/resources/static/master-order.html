@@ -151,9 +151,9 @@
         });
     }
     window.onload = function () {
-        load(0, 5);
         validateMaster();
         token = getQueryString("token");
+        load(0, 5);
     };
     var vm = new Vue({
         el: '#app',
