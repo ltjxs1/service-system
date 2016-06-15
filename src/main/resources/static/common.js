@@ -44,6 +44,9 @@ function validateMaster() {
 function jumpWithToken(html, token) {
     window.location = PREFIX + html + "?token=" + token;
 }
+function jumpAddToken(html, token) {
+    window.location = PREFIX + html + "&token=" + token;
+}
 function refresh(data){
     for (k in data) {
         console.log(k+":"+data[k]);
