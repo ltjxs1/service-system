@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="http://cdn.jsdelivr.net/vue/1.0.18/vue.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <title>单词拼写查询</title>
+
+</head>
+<body>
+
+<div class="container" >
+
+    <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+    </ol>
+    <div class="page-header">
+        <h1>单词拼写查询</h1>
+    </div>
+    <p>说明:
+        <ul>
+            <li>
+                拼写方式由下划线分隔,如 try-out 拼写方式为 try_out
+            </li>
+            <li>
+                无法使用规则的长词语将会从单词中选择3个字母拼写到原单词上,如 CapitolHill 表示为 c;p;h::_a_itol_ill
+            </li>
+        </ul>
+    </p>
+    <div id="app">
+        <input v-model="searchWord">
+        <button v-on:click="setPage(1)"><span class="glyphicon glyphicon-search"
+                                             aria-hidden="true"></span></button>
+        <table class="table table-hover">
+            <tr>
+                <th>单词</th>
+                <th>音节</th>
+                <th>拼写</th>
+                <th>规则</th>
+                <th>修改次数</th>
+                <th>修改</th>
+                <th>删除</th>
+            </tr>
+            <tr>
+                <td><input v-model="newWord"></td>
+                <td><input v-model="newSpell"></td>
+                <td colspan="3"></td>
+                <td colspan="1">
+                    <button v-on:click="addWord(newWord,newSpell)"><span class="glyphicon glyphicon-plus"
+                                                                aria-hidden="true"></span></button>
+                </td>
+                <td></td>
+
+            </tr>
+            <tbody v-for="word in content" track-by="$index">
+            <tr v-for="divide in word.divideViews" track-by="$index">
+                <td>{{word.wordName}}</td>
+                <td>{{word.spell}}</td>
+                <td><input v-model="divide.segment"></td>
+                <td>{{divide.rule}}</td>
+                <td>{{divide.modifiedTime}}</td>
+                <td>
+                    <button v-on:click="modify(word,divide)"><span class="glyphicon glyphicon-ok"
+                                                                         aria-hidden="true"></span></button>
+                </td>
+                <td>
+                    <button v-on:click="removeDivide(divide.id,word)"><span class="glyphicon glyphicon-remove"
+                                                                                 aria-hidden="true"></span></button>
+                </td>
+
+            </tr>
+            <tr>
+                <td>{{word.wordName}}</td>
+                <td>{{word.spell}}</td>
+                <td><input v-model="word.newSegment"></td>
+                <td colspan="1"></td>
+                <td colspan="1">
+                    <button v-on:click="generateDivide(word.id)"><span class="glyphicon glyphicon-tags"
+                                                                       aria-hidden="true"></span></button>
+                </td>
+                <td colspan="1">
+                    <button v-on:click="addDivide(word.id,word)"><span class="glyphicon glyphicon-plus"
+                                                                                    aria-hidden="true"></span></button>
+                </td>
+                <td>
+                    <button v-on:click="removeWord(word.id)"><span class="glyphicon glyphicon-remove"
+                                                                   aria-hidden="true"></span></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <button v-on:click="setPage(1)"><span class="glyphicon glyphicon-backward"
+                                                          aria-hidden="true"></span></button>
+                </td>
+                <td>
+                    <button v-on:click="setPage(currentPage-1)"><span class="glyphicon glyphicon-chevron-left"
+                                                                      aria-hidden="true"></span></button>
+                </td>
+                <td><input v-model="inputPage" style="width:40px;"></td>
+                <td>
+                    <button v-on:click="setPage(inputPage)"><span class="glyphicon glyphicon-play"
+                                                                  aria-hidden="true"></span>
+                </td>
+                <td>
+                    <button v-on:click="setPage(currentPage+1)"><span class="glyphicon glyphicon-chevron-right"
+                                                                      aria-hidden="true"></span></button>
+                </td>
+                <td>
+                    <button v-on:click="setPage(totalPages)"><span class="glyphicon glyphicon-forward"
+                                                                  aria-hidden="true"></span></button>
+                </td>
+                <td>共有{{totalPages}}页</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            "newWord": null,
+            "newSpell": null,
+            "searchWord": null,
+            "currentPage": 1,
+            "inputPage": 1,
+            "pageSize": 10,
+            "content": [],
+            "last": null,
+            "totalPages": null,
+            "totalElements": null,
+            "size": null,
+            "number": null,
+            "sort": null,
+            "first": null,
+            "numberOfElements": null
+
+        },
+        methods: {
+            modify: function (word, divide) {
+                var d = this;
+                $.ajax({
+                    type: "PUT",
+                    dataType: "json",
+                    contentType:'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "wordNameId": divide.wordNameId,
+                        "segment": divide.segment,
+                        "id": divide.id
+                    }),
+                    url: PREFIX + "divide",
+                    success: function (data) {
+//                        word.divideViews[index] = data;
+//                        Vue.set(word.divideViews, "", word.divideViews);
+                        d.refresh();
+                    },
+                    error: function (data) {
+                        alert(data.responseText.message);
+                    }
+                });
+
+            },
+            removeDivide: function (id) {
+                var d = this;
+                $.ajax({
+                    type: "DELETE",
+                    dataType: "json",
+                    contentType:'application/json;charset=UTF-8',
+                    url: PREFIX + "divide?id="+id,
+                    success: function (data) {
+//                        word.divideViews.baoremove(index);
+//                        Vue.set(word.divideViews,"",word.divideViews);
+                        d.refresh();
+                    },
+                    error: function (data) {
+                        alert(data.responseText.message);
+                    }
+                });
+            },
+            removeWord: function (id) {
+                var d = this;
+                $.ajax({
+                    type: "DELETE",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    url: PREFIX + "word-name?id=" + id,
+                    success: function (data) {
+                        d.refresh();
+                    },
+                    error: function (data) {
+                        alert(data.responseText.message);
+                    }
+                });
+            },
+            addDivide: function (wordNameId, word) {
+                var d = this;
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    contentType:'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "wordNameId": wordNameId,
+                        "segment": word.newSegment
+                    }),
+                    url: PREFIX + "divide",
+                    success: function (data) {
+//                        word.divideViews.push(data);
+                        d.refresh();
+                    },
+                    error: function (data) {
+                        alert(data.responseText.message);
+                    }
+                });
+                word.newSpell = "";
+                Vue.set(word, "", word);
+            },
+            addWord: function (wordName,spell) {
+                var d = this;
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    url: PREFIX + "word-name?wordName=" + wordName+"&spell="+spell,
+                    success: function (data) {
+                        d.refresh();
+                    },
+                    error: function (data) {
+                        alert(data.responseText.message);
+                    }
+                });
+            },
+            generateDivide: function (id) {
+                var d = this;
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    url: PREFIX + "word-name/generate?id=" + id,
+                    success: function (data) {
+                        d.refresh();
+                    },
+                    error: function (data) {
+                        alert(data.responseText.message);
+                    }
+                });
+            },
+            setPage: function (page) {
+                var d = this;
+                if (page < 1) {
+                    page = 1;
+                }
+                if (page > d.totalPages) {
+                    page = d.totalPages;
+                }
+                vm.$set("inputPage",parseInt(page));
+                vm.$set("currentPage",parseInt(page));
+                d.refresh();
+            },
+            refresh: function () {
+                load(this.searchWord, this.currentPage, this.pageSize);
+            }
+        }
+    });
+
+    function load(name, page, limit) {
+        if (name == null) {
+            name = "";
+        }
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: PREFIX + "word-name?name=" + name + "&page=" + page + "&limit=" + limit,
+            success: function (data) {
+                for (k in data) {
+                    vm.$set(k, data[k]);
+                }
+            },
+            error: function (data) {
+                alert(data.responseText.message);
+            }
+        });
+    }
+    window.onload = function () {
+        load("", 1, 10);
+    };
+
+    var PREFIX = "";
+</script>
+
+</body>
+</html>
